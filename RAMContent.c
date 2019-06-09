@@ -1,10 +1,12 @@
 #include<stdint.h>        					//when you want to use uint8/32 keywords :)
-#include "Board_LED.h"
-#include "Board_Buttons.h"
+#include "Board_LED.h"						// Headers are compiled during Pre-Processor compilation
+#include "Board_Buttons.h"					// They don't use RAM
 
-void delay (void)
+void delay (void)						// Function lives in FLASH as it will be converted into instructions
 {
-	uint32_t i;										// 
+	uint32_t i;					// Local Vars are stored in stack memory which is part of RAM
+							// But stack doesn't grow or shrink when code is not running
+							// It will only consume RAM during run time
 	for (i=0; i<500000; i++);			// for loop for delay
 }
 
@@ -33,15 +35,15 @@ void fun1 (void)
 }
 int main (void)
 {
-	Buttons_Initialize();
-	LED_Initialize();
+//	Buttons_Initialize();
+	LED_Initialize(); // In this function, all variables are local
 	
 //	fun1();
 	while (1)											// Don't forget that otherwise your program just execute once
 	{
 //	if (Buttons_GetState()==1)
 //	{
-	LED_On(1);
+	LED_On(1);	// This function although contains global variable, they are constants that are stored in FLASH
 	delay();
 	LED_Off(1);
 	delay();
