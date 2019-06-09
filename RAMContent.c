@@ -33,11 +33,23 @@ void fun1 (void)
 {
 	fun2();
 }
+
+void ram_read (void)
+{
+	uint32_t *ram_pointer = (uint32_t*)(0x20000000); // {Initialzing a pointer named ram-pointer to a value which is int}
+	int value = *(ram_pointer); //{Now dereferecing this pointer will give me the value at that pointer
+	//But this shows an error because we can't initialize a pointer variable to a int
+	//Error :main.c(40): error:  #144: a value of type "int" cannot be used to initialize an entity of type "uint32_t *"
+	//This occurs because compiler assumes 0x20000000 as int by default
+	//uint32_t *ram_pointer = &delay; will also throw an error because we are trying to initialze an entity of
+	//type uint32_t to a pointer of type void (*) void. So, we have to typecast it first to uint32_t using
+	//(uint32_t*)(&delay). Likewise, for our int case, we will do the same typecast the int pointer to uint32_t type pointer
+}
 int main (void)
 {
 //	Buttons_Initialize();
 	LED_Initialize(); // In this function, all variables are local
-	
+	ram_read();
 //	fun1();
 	while (1)											// Don't forget that otherwise your program just execute once
 	{
